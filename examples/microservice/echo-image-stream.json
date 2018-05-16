@@ -1,0 +1,57 @@
+{
+    "apiVersion": "v1",
+    "kind": "ImageStream",
+    "metadata": {
+        "annotations": {
+            "openshift.io/display-name": "ImageStream for echo microservice"
+        },
+        "name": "echo"
+    },
+    "spec": {
+        "lookupPolicy": {
+            "local": false
+        },
+        "tags": [
+            {
+                "annotations": {
+                    "description": "docker image for echo microservice, see https://github.com/tkashem/echo-api/blob/master/README.md.",
+                    "iconClass": "icon-openshift",
+                    "openshift.io/display-name": "Docker Image for echo 1.0",
+                    "openshift.io/provider-display-name": "Red Hat, Inc.",
+                    "sampleRepo": "https://github.com/tkashem/echo-api.git",
+                    "supports": "echo",
+                    "tags": "builder,echo,microservice,sample",
+                    "version": "1.0"
+                },
+                "from": {
+                    "kind": "DockerImage",
+                    "name": "docker.io/tohinkashem/echo:1.0"
+                },
+                "name": "1.0",
+                "referencePolicy": {
+                    "type": "Local"
+                }
+            },
+            {
+                "annotations": {
+                    "description": "docker image for echo microservice, see https://github.com/tkashem/echo-api/blob/master/README.md.",
+                    "iconClass": "icon-openshift",
+                    "openshift.io/display-name": "Docker Image for echo latest",
+                    "openshift.io/provider-display-name": "Red Hat, Inc.",
+                    "sampleRepo": "https://github.com/tkashem/echo-api.git",
+                    "supports": "echo",
+                    "tags": "builder,echo,microservice,sample",
+                    "version": "1.0"
+                },
+                "from": {
+                    "kind": "DockerImage",
+                    "name": "docker.io/tohinkashem/echo:latest"
+                },
+                "name": "latest",
+                "referencePolicy": {
+                    "type": "Local"
+                }
+            }
+        ]
+    }
+}

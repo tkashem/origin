@@ -1,6 +1,7 @@
 package version
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/prometheus/client_golang/prometheus"
@@ -70,6 +71,8 @@ func init() {
 		[]string{"major", "minor", "gitCommit", "gitVersion"},
 	)
 	buildInfo.WithLabelValues(majorFromGit, minorFromGit, commitFromGit, versionFromGit).Set(1)
+
+	fmt.Println("Hello - changes")
 
 	prometheus.MustRegister(buildInfo)
 }

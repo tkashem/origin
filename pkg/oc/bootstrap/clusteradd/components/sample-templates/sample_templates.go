@@ -18,6 +18,8 @@ var templateLocations = map[string]string{
 	"rails quickstart":           "examples/quickstarts/rails-postgresql-persistent.json",
 	"jenkins pipeline ephemeral": "examples/jenkins/jenkins-ephemeral-template.json",
 	"sample pipeline":            "examples/jenkins/pipeline/samplepipeline.yaml",
+	"echo":                       "examples/microservice/echo.json",
+	"echo image stream":          "examples/microservice/echo-image-stream.json",
 }
 
 type SampleTemplatesComponentOptions struct {
