@@ -14,6 +14,8 @@
 // examples/db-templates/redis-persistent-template.json
 // examples/jenkins/jenkins-ephemeral-template.json
 // examples/jenkins/jenkins-persistent-template.json
+// examples/microservice/echo-image-stream.json
+// examples/microservice/echo.json
 // examples/jenkins/pipeline/bluegreen-pipeline.yaml
 // examples/jenkins/pipeline/mapsapp-pipeline.yaml
 // examples/jenkins/pipeline/maven-pipeline.yaml
@@ -6257,6 +6259,311 @@ func examplesJenkinsJenkinsPersistentTemplateJson() (*asset, error) {
 	}
 
 	info := bindataFileInfo{name: "examples/jenkins/jenkins-persistent-template.json", size: 0, mode: os.FileMode(0), modTime: time.Unix(0, 0)}
+	a := &asset{bytes: bytes, info: info}
+	return a, nil
+}
+
+var _examplesMicroserviceEchoImageStreamJson = []byte(`{
+    "apiVersion": "v1",
+    "kind": "ImageStream",
+    "metadata": {
+        "annotations": {
+            "openshift.io/display-name": "ImageStream for echo microservice"
+        },
+        "name": "echo"
+    },
+    "spec": {
+        "lookupPolicy": {
+            "local": false
+        },
+        "tags": [
+            {
+                "annotations": {
+                    "description": "docker image for echo microservice, see https://github.com/tkashem/echo-api/blob/master/README.md.",
+                    "iconClass": "icon-openshift",
+                    "openshift.io/display-name": "Docker Image for echo 1.0",
+                    "openshift.io/provider-display-name": "Red Hat, Inc.",
+                    "sampleRepo": "https://github.com/tkashem/echo-api.git",
+                    "supports": "echo",
+                    "tags": "builder,echo,microservice,sample",
+                    "version": "1.0"
+                },
+                "from": {
+                    "kind": "DockerImage",
+                    "name": "docker.io/tohinkashem/echo:1.0"
+                },
+                "name": "1.0",
+                "referencePolicy": {
+                    "type": "Local"
+                }
+            },
+            {
+                "annotations": {
+                    "description": "docker image for echo microservice, see https://github.com/tkashem/echo-api/blob/master/README.md.",
+                    "iconClass": "icon-openshift",
+                    "openshift.io/display-name": "Docker Image for echo latest",
+                    "openshift.io/provider-display-name": "Red Hat, Inc.",
+                    "sampleRepo": "https://github.com/tkashem/echo-api.git",
+                    "supports": "echo",
+                    "tags": "builder,echo,microservice,sample",
+                    "version": "1.0"
+                },
+                "from": {
+                    "kind": "DockerImage",
+                    "name": "docker.io/tohinkashem/echo:latest"
+                },
+                "name": "latest",
+                "referencePolicy": {
+                    "type": "Local"
+                }
+            }
+        ]
+    }
+}`)
+
+func examplesMicroserviceEchoImageStreamJsonBytes() ([]byte, error) {
+	return _examplesMicroserviceEchoImageStreamJson, nil
+}
+
+func examplesMicroserviceEchoImageStreamJson() (*asset, error) {
+	bytes, err := examplesMicroserviceEchoImageStreamJsonBytes()
+	if err != nil {
+		return nil, err
+	}
+
+	info := bindataFileInfo{name: "examples/microservice/echo-image-stream.json", size: 0, mode: os.FileMode(0), modTime: time.Unix(0, 0)}
+	a := &asset{bytes: bytes, info: info}
+	return a, nil
+}
+
+var _examplesMicroserviceEchoJson = []byte(`{
+    "kind": "Template",
+    "apiVersion": "v1",
+    "metadata": {
+      "name": "echo",
+      "annotations": {
+        "openshift.io/display-name": "Self hosted micro service in Go",
+        "description": "An example of self hosted micro service in Go. For more information about using this template, including OpenShift considerations, see https://github.com/tkashem/echo-api/blob/master/README.md.",
+        "tags": "quickstart,microservice,golang",
+        "iconClass": "icon-openshift",
+        "openshift.io/long-description": "This template defines resources needed to deploy and scale a self hosted microservice written in Go, including a build configuration and application deployment configuration.",
+        "openshift.io/provider-display-name": "Red Hat, Inc.",
+        "openshift.io/documentation-url": "https://github.com/tkashem/echo-api",
+        "openshift.io/support-url": "https://access.redhat.com"
+      }
+    },
+    "message": "The following service(s) have been created in your project: ${NAME}.\n\nFor more information about using this template, including OpenShift considerations, see https://github.com/tkashem/echo-api/blob/master/README.md.",
+    "labels": {
+      "template": "echo"
+    },
+    "objects": [
+      {
+        "kind": "Service",
+        "apiVersion": "v1",
+        "metadata": {
+          "name": "${NAME}",
+          "annotations": {
+            "description": "Exposes and load balances among multiple pods of this microservice"
+          }
+        },
+        "spec": {
+          "ports": [
+            {
+              "name": "web",
+              "port": 3000,
+              "targetPort": 3000
+            }
+          ],
+          "selector": {
+            "name": "${NAME}"
+          }
+        }
+      },
+      {
+        "kind": "Route",
+        "apiVersion": "v1",
+        "metadata": {
+          "name": "${NAME}",
+          "annotations": {
+            "template.openshift.io/expose-uri": "http://{.spec.host}{.spec.path}"
+          }
+        },
+        "spec": {
+          "host": "${APPLICATION_DOMAIN}",
+          "to": {
+            "kind": "Service",
+            "name": "${NAME}"
+          }
+        }
+      },
+      {
+        "kind": "DeploymentConfig",
+        "apiVersion": "v1",
+        "metadata": {
+          "name": "${NAME}",
+          "annotations": {
+            "description": "Defines how to deploy the application server",
+            "template.alpha.openshift.io/wait-for-ready": "true"
+          }
+        },
+        "spec": {
+          "strategy": {
+            "type": "Rolling"
+          },
+          "triggers": [
+            {
+              "type": "ImageChange",
+              "imageChangeParams": {
+                "automatic": true,
+                "containerNames": [
+                  "echo"
+                ],
+                "from": {
+                  "kind": "ImageStreamTag",
+                  "name": "${NAME}:latest"
+                }
+              }
+            },
+            {
+              "type": "ConfigChange"
+            }
+          ],
+          "replicas": 1,
+          "selector": {
+            "name": "${NAME}"
+          },
+          "template": {
+            "metadata": {
+              "name": "${NAME}",
+              "labels": {
+                "name": "${NAME}"
+              }
+            },
+            "spec": {
+              "containers": [
+                {
+                  "name": "echo",
+                  "image": " ",
+                  "ports": [
+                    {
+                      "containerPort": 8080
+                    }
+                  ],
+                  "readinessProbe": {
+                    "timeoutSeconds": 3,
+                    "initialDelaySeconds": 3,
+                    "httpGet": {
+                      "path": "/echo/ping",
+                      "port": 3000
+                    }
+                  },
+                  "livenessProbe": {
+                      "timeoutSeconds": 3,
+                      "initialDelaySeconds": 30,
+                      "httpGet": {
+                          "path": "/echo/ping",
+                          "port": 3000
+                      }
+                  },
+                  "resources": {
+                      "limits": {
+                          "memory": "${MEMORY_LIMIT}"
+                      }
+                  },
+                  "env": [
+                  ],
+                  "resources": {
+                    "limits": {
+                      "memory": "${MEMORY_LIMIT}"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    ],
+    "parameters": [
+      {
+        "name": "NAME",
+        "displayName": "Name",
+        "description": "The name assigned to all of the frontend objects defined in this template.",
+        "required": true,
+        "value": "echo"
+      },
+      {
+        "name": "NAMESPACE",
+        "displayName": "Namespace",
+        "description": "The OpenShift Namespace where the ImageStream resides.",
+        "required": true,
+        "value": "openshift"
+      },
+      {
+        "name": "ECHO_VERSION",
+        "displayName": "Echo Microservice Version",
+        "description": "Version of the microservice to be used (1.0 by default).",
+        "required": true,
+        "value": "1.0"
+      },
+      {
+        "name": "MEMORY_LIMIT",
+        "displayName": "Memory Limit",
+        "description": "Maximum amount of memory the container can use.",
+        "required": true,
+        "value": "512Mi"
+      },
+      {
+        "name": "SOURCE_REPOSITORY_URL",
+        "displayName": "Git Repository URL",
+        "description": "The URL of the repository with your application source code.",
+        "required": true,
+        "value": "https://github.com/tkashem/echo-api.git"
+      },
+      {
+        "name": "SOURCE_REPOSITORY_REF",
+        "displayName": "Git Reference",
+        "description": "Set this to a branch name, tag or other ref of your repository if you are not using the default branch."
+      },
+      {
+        "name": "CONTEXT_DIR",
+        "displayName": "Context Directory",
+        "description": "Set this to the relative path to your project if it is not in the root of your repository."
+      },
+      {
+        "name": "APPLICATION_DOMAIN",
+        "displayName": "Application Hostname",
+        "description": "The exposed hostname that will route to the nginx service, if left blank a value will be defaulted.",
+        "value": ""
+      },
+      {
+        "name": "GITHUB_WEBHOOK_SECRET",
+        "displayName": "GitHub Webhook Secret",
+        "description": "Github trigger secret.  A difficult to guess string encoded as part of the webhook URL.  Not encrypted.",
+        "generate": "expression",
+        "from": "[a-zA-Z0-9]{40}"
+      },
+      {
+        "name": "GENERIC_WEBHOOK_SECRET",
+        "displayName": "Generic Webhook Secret",
+        "description": "A secret string used to configure the Generic webhook.",
+        "generate": "expression",
+        "from": "[a-zA-Z0-9]{40}"
+      }
+    ]
+  }`)
+
+func examplesMicroserviceEchoJsonBytes() ([]byte, error) {
+	return _examplesMicroserviceEchoJson, nil
+}
+
+func examplesMicroserviceEchoJson() (*asset, error) {
+	bytes, err := examplesMicroserviceEchoJsonBytes()
+	if err != nil {
+		return nil, err
+	}
+
+	info := bindataFileInfo{name: "examples/microservice/echo.json", size: 0, mode: os.FileMode(0), modTime: time.Unix(0, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -18092,6 +18399,8 @@ var _bindata = map[string]func() (*asset, error){
 	"examples/db-templates/redis-persistent-template.json": examplesDbTemplatesRedisPersistentTemplateJson,
 	"examples/jenkins/jenkins-ephemeral-template.json": examplesJenkinsJenkinsEphemeralTemplateJson,
 	"examples/jenkins/jenkins-persistent-template.json": examplesJenkinsJenkinsPersistentTemplateJson,
+	"examples/microservice/echo-image-stream.json": examplesMicroserviceEchoImageStreamJson,
+	"examples/microservice/echo.json": examplesMicroserviceEchoJson,
 	"examples/jenkins/pipeline/bluegreen-pipeline.yaml": examplesJenkinsPipelineBluegreenPipelineYaml,
 	"examples/jenkins/pipeline/mapsapp-pipeline.yaml": examplesJenkinsPipelineMapsappPipelineYaml,
 	"examples/jenkins/pipeline/maven-pipeline.yaml": examplesJenkinsPipelineMavenPipelineYaml,
@@ -18207,6 +18516,10 @@ var _bintree = &bintree{nil, map[string]*bintree{
 				"openshift-client-plugin-pipeline.yaml": &bintree{examplesJenkinsPipelineOpenshiftClientPluginPipelineYaml, map[string]*bintree{}},
 				"samplepipeline.yaml": &bintree{examplesJenkinsPipelineSamplepipelineYaml, map[string]*bintree{}},
 			}},
+		}},
+		"microservice": &bintree{nil, map[string]*bintree{
+			"echo-image-stream.json": &bintree{examplesMicroserviceEchoImageStreamJson, map[string]*bintree{}},
+			"echo.json": &bintree{examplesMicroserviceEchoJson, map[string]*bintree{}},
 		}},
 		"prometheus": &bintree{nil, map[string]*bintree{
 			"prometheus.yaml": &bintree{examplesPrometheusPrometheusYaml, map[string]*bintree{}},

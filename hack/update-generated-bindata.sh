@@ -28,6 +28,7 @@ pushd "${OS_ROOT}" > /dev/null
     examples/image-streams/... \
     examples/db-templates/... \
     examples/jenkins \
+    examples/microservice \
     examples/jenkins/pipeline \
     examples/quickstarts/... \
     examples/heapster/... \
@@ -51,6 +52,7 @@ pushd "${OS_ROOT}" > /dev/null
     test/integration/testdata \
     examples/db-templates \
     examples/image-streams \
+    examples/microservice \
     examples/sample-app \
     examples/quickstarts/... \
     examples/prometheus/... \
