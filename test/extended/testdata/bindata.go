@@ -18211,7 +18211,8 @@ var _examplesMicroserviceEchoJson = []byte(`{
                 ],
                 "from": {
                   "kind": "ImageStreamTag",
-                  "name": "${NAME}:latest"
+                  "name": "${IS_NAME}:${IS_TAG}",
+                  "namespace": "${IS_NAMESPACE}"
                 }
               }
             },
@@ -18234,7 +18235,7 @@ var _examplesMicroserviceEchoJson = []byte(`{
               "containers": [
                 {
                   "name": "echo",
-                  "image": " ",
+                  "image": "${IS_NAMESPACE}/${IS_NAME}:${IS_TAG}",
                   "ports": [
                     {
                       "containerPort": 8080
@@ -18284,19 +18285,26 @@ var _examplesMicroserviceEchoJson = []byte(`{
         "value": "echo"
       },
       {
-        "name": "NAMESPACE",
-        "displayName": "Namespace",
-        "description": "The OpenShift Namespace where the ImageStream resides.",
-        "required": true,
+        "name": "IS_NAMESPACE",
+        "displayName": "Project under which the image stream is defined",
+        "description": "Project under which the image stream is defined.",
+        "required": false,
         "value": "openshift"
-      },
+      },      
       {
-        "name": "ECHO_VERSION",
+        "name": "IS_NAME",
+        "displayName": "Image stream name",
+        "description": "Image stream name.",
+        "required": false,
+        "value": "echo"
+      },            
+      {
+        "name": "IS_TAG",
         "displayName": "Echo Microservice Version",
         "description": "Version of the microservice to be used (1.0 by default).",
-        "required": true,
+        "required": false,
         "value": "1.0"
-      },
+      },      
       {
         "name": "MEMORY_LIMIT",
         "displayName": "Memory Limit",
@@ -18305,41 +18313,10 @@ var _examplesMicroserviceEchoJson = []byte(`{
         "value": "512Mi"
       },
       {
-        "name": "SOURCE_REPOSITORY_URL",
-        "displayName": "Git Repository URL",
-        "description": "The URL of the repository with your application source code.",
-        "required": true,
-        "value": "https://github.com/tkashem/echo-api.git"
-      },
-      {
-        "name": "SOURCE_REPOSITORY_REF",
-        "displayName": "Git Reference",
-        "description": "Set this to a branch name, tag or other ref of your repository if you are not using the default branch."
-      },
-      {
-        "name": "CONTEXT_DIR",
-        "displayName": "Context Directory",
-        "description": "Set this to the relative path to your project if it is not in the root of your repository."
-      },
-      {
         "name": "APPLICATION_DOMAIN",
         "displayName": "Application Hostname",
         "description": "The exposed hostname that will route to the nginx service, if left blank a value will be defaulted.",
         "value": ""
-      },
-      {
-        "name": "GITHUB_WEBHOOK_SECRET",
-        "displayName": "GitHub Webhook Secret",
-        "description": "Github trigger secret.  A difficult to guess string encoded as part of the webhook URL.  Not encrypted.",
-        "generate": "expression",
-        "from": "[a-zA-Z0-9]{40}"
-      },
-      {
-        "name": "GENERIC_WEBHOOK_SECRET",
-        "displayName": "Generic Webhook Secret",
-        "description": "A secret string used to configure the Generic webhook.",
-        "generate": "expression",
-        "from": "[a-zA-Z0-9]{40}"
       }
     ]
   }`)
