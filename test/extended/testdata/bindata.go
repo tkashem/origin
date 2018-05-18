@@ -218,9 +218,9 @@
 // examples/db-templates/postgresql-persistent-template.json
 // examples/db-templates/redis-ephemeral-template.json
 // examples/db-templates/redis-persistent-template.json
+// examples/image-streams/echo-image-stream.json
 // examples/image-streams/image-streams-centos7.json
 // examples/image-streams/image-streams-rhel7.json
-// examples/microservice/echo-image-stream.json
 // examples/microservice/echo.json
 // examples/sample-app/application-template-custombuild.json
 // examples/sample-app/application-template-dockerbuild.json
@@ -15385,6 +15385,79 @@ func examplesDbTemplatesRedisPersistentTemplateJson() (*asset, error) {
 	return a, nil
 }
 
+var _examplesImageStreamsEchoImageStreamJson = []byte(`{
+    "apiVersion": "v1",
+    "kind": "ImageStream",
+    "metadata": {
+        "annotations": {
+            "openshift.io/display-name": "ImageStream for echo microservice"
+        },
+        "name": "echo"
+    },
+    "spec": {
+        "lookupPolicy": {
+            "local": false
+        },
+        "tags": [
+            {
+                "annotations": {
+                    "description": "docker image for echo microservice, see https://github.com/tkashem/echo-api/blob/master/README.md.",
+                    "iconClass": "icon-openshift",
+                    "openshift.io/display-name": "Docker Image for echo 1.0",
+                    "openshift.io/provider-display-name": "Red Hat, Inc.",
+                    "sampleRepo": "https://github.com/tkashem/echo-api.git",
+                    "supports": "echo",
+                    "tags": "builder,echo,microservice,sample",
+                    "version": "1.0"
+                },
+                "from": {
+                    "kind": "DockerImage",
+                    "name": "docker.io/tohinkashem/echo:1.0"
+                },
+                "name": "1.0",
+                "referencePolicy": {
+                    "type": "Local"
+                }
+            },
+            {
+                "annotations": {
+                    "description": "docker image for echo microservice, see https://github.com/tkashem/echo-api/blob/master/README.md.",
+                    "iconClass": "icon-openshift",
+                    "openshift.io/display-name": "Docker Image for echo latest",
+                    "openshift.io/provider-display-name": "Red Hat, Inc.",
+                    "sampleRepo": "https://github.com/tkashem/echo-api.git",
+                    "supports": "echo",
+                    "tags": "builder,echo,microservice,sample",
+                    "version": "1.0"
+                },
+                "from": {
+                    "kind": "DockerImage",
+                    "name": "docker.io/tohinkashem/echo:latest"
+                },
+                "name": "latest",
+                "referencePolicy": {
+                    "type": "Local"
+                }
+            }
+        ]
+    }
+}`)
+
+func examplesImageStreamsEchoImageStreamJsonBytes() ([]byte, error) {
+	return _examplesImageStreamsEchoImageStreamJson, nil
+}
+
+func examplesImageStreamsEchoImageStreamJson() (*asset, error) {
+	bytes, err := examplesImageStreamsEchoImageStreamJsonBytes()
+	if err != nil {
+		return nil, err
+	}
+
+	info := bindataFileInfo{name: "examples/image-streams/echo-image-stream.json", size: 0, mode: os.FileMode(0), modTime: time.Unix(0, 0)}
+	a := &asset{bytes: bytes, info: info}
+	return a, nil
+}
+
 var _examplesImageStreamsImageStreamsCentos7Json = []byte(`{
   "kind": "ImageStreamList",
   "apiVersion": "v1",
@@ -18050,79 +18123,6 @@ func examplesImageStreamsImageStreamsRhel7Json() (*asset, error) {
 	}
 
 	info := bindataFileInfo{name: "examples/image-streams/image-streams-rhel7.json", size: 0, mode: os.FileMode(0), modTime: time.Unix(0, 0)}
-	a := &asset{bytes: bytes, info: info}
-	return a, nil
-}
-
-var _examplesMicroserviceEchoImageStreamJson = []byte(`{
-    "apiVersion": "v1",
-    "kind": "ImageStream",
-    "metadata": {
-        "annotations": {
-            "openshift.io/display-name": "ImageStream for echo microservice"
-        },
-        "name": "echo"
-    },
-    "spec": {
-        "lookupPolicy": {
-            "local": false
-        },
-        "tags": [
-            {
-                "annotations": {
-                    "description": "docker image for echo microservice, see https://github.com/tkashem/echo-api/blob/master/README.md.",
-                    "iconClass": "icon-openshift",
-                    "openshift.io/display-name": "Docker Image for echo 1.0",
-                    "openshift.io/provider-display-name": "Red Hat, Inc.",
-                    "sampleRepo": "https://github.com/tkashem/echo-api.git",
-                    "supports": "echo",
-                    "tags": "builder,echo,microservice,sample",
-                    "version": "1.0"
-                },
-                "from": {
-                    "kind": "DockerImage",
-                    "name": "docker.io/tohinkashem/echo:1.0"
-                },
-                "name": "1.0",
-                "referencePolicy": {
-                    "type": "Local"
-                }
-            },
-            {
-                "annotations": {
-                    "description": "docker image for echo microservice, see https://github.com/tkashem/echo-api/blob/master/README.md.",
-                    "iconClass": "icon-openshift",
-                    "openshift.io/display-name": "Docker Image for echo latest",
-                    "openshift.io/provider-display-name": "Red Hat, Inc.",
-                    "sampleRepo": "https://github.com/tkashem/echo-api.git",
-                    "supports": "echo",
-                    "tags": "builder,echo,microservice,sample",
-                    "version": "1.0"
-                },
-                "from": {
-                    "kind": "DockerImage",
-                    "name": "docker.io/tohinkashem/echo:latest"
-                },
-                "name": "latest",
-                "referencePolicy": {
-                    "type": "Local"
-                }
-            }
-        ]
-    }
-}`)
-
-func examplesMicroserviceEchoImageStreamJsonBytes() ([]byte, error) {
-	return _examplesMicroserviceEchoImageStreamJson, nil
-}
-
-func examplesMicroserviceEchoImageStreamJson() (*asset, error) {
-	bytes, err := examplesMicroserviceEchoImageStreamJsonBytes()
-	if err != nil {
-		return nil, err
-	}
-
-	info := bindataFileInfo{name: "examples/microservice/echo-image-stream.json", size: 0, mode: os.FileMode(0), modTime: time.Unix(0, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -33644,9 +33644,9 @@ var _bindata = map[string]func() (*asset, error){
 	"examples/db-templates/postgresql-persistent-template.json": examplesDbTemplatesPostgresqlPersistentTemplateJson,
 	"examples/db-templates/redis-ephemeral-template.json": examplesDbTemplatesRedisEphemeralTemplateJson,
 	"examples/db-templates/redis-persistent-template.json": examplesDbTemplatesRedisPersistentTemplateJson,
+	"examples/image-streams/echo-image-stream.json": examplesImageStreamsEchoImageStreamJson,
 	"examples/image-streams/image-streams-centos7.json": examplesImageStreamsImageStreamsCentos7Json,
 	"examples/image-streams/image-streams-rhel7.json": examplesImageStreamsImageStreamsRhel7Json,
-	"examples/microservice/echo-image-stream.json": examplesMicroserviceEchoImageStreamJson,
 	"examples/microservice/echo.json": examplesMicroserviceEchoJson,
 	"examples/sample-app/application-template-custombuild.json": examplesSampleAppApplicationTemplateCustombuildJson,
 	"examples/sample-app/application-template-dockerbuild.json": examplesSampleAppApplicationTemplateDockerbuildJson,
@@ -33763,6 +33763,7 @@ var _bintree = &bintree{nil, map[string]*bintree{
 			"hello-project.json": &bintree{examplesHelloOpenshiftHelloProjectJson, map[string]*bintree{}},
 		}},
 		"image-streams": &bintree{nil, map[string]*bintree{
+			"echo-image-stream.json": &bintree{examplesImageStreamsEchoImageStreamJson, map[string]*bintree{}},
 			"image-streams-centos7.json": &bintree{examplesImageStreamsImageStreamsCentos7Json, map[string]*bintree{}},
 			"image-streams-rhel7.json": &bintree{examplesImageStreamsImageStreamsRhel7Json, map[string]*bintree{}},
 		}},
@@ -33780,7 +33781,6 @@ var _bintree = &bintree{nil, map[string]*bintree{
 			}},
 		}},
 		"microservice": &bintree{nil, map[string]*bintree{
-			"echo-image-stream.json": &bintree{examplesMicroserviceEchoImageStreamJson, map[string]*bintree{}},
 			"echo.json": &bintree{examplesMicroserviceEchoJson, map[string]*bintree{}},
 		}},
 		"prometheus": &bintree{nil, map[string]*bintree{

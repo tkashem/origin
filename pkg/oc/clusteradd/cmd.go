@@ -60,6 +60,9 @@ var availableComponents = map[string]func(ctx componentinstall.Context) componen
 	"rhel-imagestreams": func(ctx componentinstall.Context) componentinstall.Component {
 		return &default_imagestreams.RHELImageStreamsComponentOptions{InstallContext: ctx}
 	},
+	"echo-imagestreams": func(ctx componentinstall.Context) componentinstall.Component {
+		return &default_imagestreams.MyOwnImageStreamsComponentOptions{InstallContext: ctx}
+	},
 	"router": func(ctx componentinstall.Context) componentinstall.Component {
 		return &router.RouterComponentOptions{InstallContext: ctx}
 	},

@@ -9,6 +9,7 @@ import (
 const (
 	rhelLocation   = "examples/image-streams/image-streams-rhel7.json"
 	centosLocation = "examples/image-streams/image-streams-centos7.json"
+	echoLocation   = "examples/image-streams/echo-image-stream.json"
 )
 
 type RHELImageStreamsComponentOptions struct {
@@ -44,6 +45,26 @@ func (c *CentosImageStreamsComponentOptions) Install(dockerClient dockerhelper.I
 		Name:      c.Name(),
 		Namespace: "openshift",
 		List:      manifests.MustAsset(centosLocation),
+	}
+
+	return component.MakeReady(
+		c.InstallContext.ClientImage(),
+		c.InstallContext.BaseDir()).Install(dockerClient)
+}
+
+type MyOwnImageStreamsComponentOptions struct {
+	InstallContext componentinstall.Context
+}
+
+func (c *MyOwnImageStreamsComponentOptions) Name() string {
+	return "echo-imagestreams"
+}
+
+func (c *MyOwnImageStreamsComponentOptions) Install(dockerClient dockerhelper.Interface) error {
+	component := componentinstall.List{
+		Name:      c.Name(),
+		Namespace: "openshift",
+		List:      manifests.MustAsset(echoLocation),
 	}
 
 	return component.MakeReady(
